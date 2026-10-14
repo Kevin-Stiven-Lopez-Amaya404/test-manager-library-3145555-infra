@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: library
+      POSTGRES_USER: library
+      POSTGRES_PASSWORD: library
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+  api:
+    build: ../test-manager-library-3145555-api
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: library
+      DB_USERNAME: library
+      DB_PASSWORD: library
+      JWT_SECRET: change-me
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: change-me
+      CORS_ORIGIN: http://localhost:5173
+    ports: ["8000:8000"]
+    depends_on: [db]
+  app:
+    build: ../test-manager-library-3145555-app
+    ports: ["5173:5173"]
+    depends_on: [api]
+volumes:
+  pgdata:
