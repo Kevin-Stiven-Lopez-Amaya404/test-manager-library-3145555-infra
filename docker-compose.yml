@@ -22,16 +22,25 @@ services:
       CORS_ORIGIN: http://localhost:5173
     ports: ["8000:8000"]
     depends_on: [db]
+    healthcheck:
+      test: ["CMD-SHELL", "php -r \"exit(@file_get_contents('http://127.0.0.1:8000/health') === false);\""]
+      interval: 5s
+      timeout: 3s
+      retries: 20
   app:
     build: ../test-manager-library-3145555-app
     ports: ["5173:5173"]
-    depends_on: [api]
+    depends_on:
+      api:
+        condition: service_healthy
   tool:
     build: ../test-manager-library-3145555-tool
     environment:
       API_URL: http://api:8000/api/v1
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: change-me
-    depends_on: [api]
+    depends_on:
+      api:
+        condition: service_healthy
 volumes:
   pgdata:
