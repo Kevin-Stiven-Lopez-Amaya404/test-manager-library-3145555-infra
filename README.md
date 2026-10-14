@@ -15,3 +15,9 @@ docker compose up --build
 - Usuario inicial: `admin` / `change-me`
 
 Para datos de demostración, ejecuta `python seed.py` desde `tool` apuntando a `http://localhost:8000/api/v1`.
+
+Si no tienes Python instalado en Windows, usa Docker desde esta carpeta:
+
+```bash
+docker compose run --rm tool
+```

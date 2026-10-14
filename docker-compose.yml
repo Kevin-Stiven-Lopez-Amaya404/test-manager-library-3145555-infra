@@ -26,5 +26,12 @@ services:
     build: ../test-manager-library-3145555-app
     ports: ["5173:5173"]
     depends_on: [api]
+  tool:
+    build: ../test-manager-library-3145555-tool
+    environment:
+      API_URL: http://api:8000/api/v1
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: change-me
+    depends_on: [api]
 volumes:
   pgdata:
